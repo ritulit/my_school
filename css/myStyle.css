@@ -1,0 +1,128 @@
+* {
+	/*margin: 0 auto;*/
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Montserrat', san-serif;
+}
+
+/*body {
+	background-attachment: fixed;
+	font: 10px ;
+
+	font-weight: bold;
+}*/
+
+ul{
+list-style: none;
+
+}
+.temp-element{
+position:fixed;
+top:0;
+left:0;
+
+}
+
+.root-container{
+	display: flex;
+	position: abosolute;
+	top: 55px;
+	bottom: 5px;
+	left: 0;
+	right: 0;
+	height: 98%;
+	width: 98%;
+	border: solid blue 2px;
+
+
+
+}
+
+.main-container{
+	position: relative;
+	top: 35px;
+	bottom: 40px;
+	left: 5px;
+	border: solid black 1px;
+	width : 45%;
+	margin : 20px;
+	font-size: 14px;
+
+
+
+
+}
+
+.list-container{
+position: relative;
+top: 40px;
+bottom: 40px;
+left: 0;
+border: solid black 1px;
+width : 25%;
+margin : 15px;
+font-size: 18px;
+vertical-align:middle;
+overflow: auto;
+
+}
+
+
+.nav-bar{
+
+position: fixed;
+top: 0;
+left: 0;
+right: 50px;
+height: 50px;
+text-align: right;
+
+}
+
+
+.display-bar{
+margin-left:20px;
+margin-top:5px;
+width: 50%;
+}
+.business-err{
+ margin: 50px;
+
+}
+
+
+
+.avatar{
+
+width: 2em;
+height: 2em;
+border-radius: 50%;
+margin: 5px;
+
+}
+
+.regErrorMessage{
+display: inline-block;
+color: red;
+margin-left: 10px;
+}
+
+.regSuccessMsg{
+	display: inline-block;
+	color: green;
+	margin-left: 10px;
+
+
+}
+
+.err-image{
+	width: 50%;
+	height: 50%;
+	margin: auto;
+	position: absolute;
+	left: 25%;
+	top: 25%;
+	z-index: -100;
+
+
+}
