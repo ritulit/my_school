@@ -17,18 +17,19 @@
    if(!isset($_GET['id'])){ ?>
     <h2 class="business-err"> Something is wrong with your request. Please add filters to search by. </h2>
    <?php }
-   elseif(isset($_GET['id']) && !empty($data)){
+   if(isset($_GET['id']) && !empty($data['dynamic_view'])){
+     //echo ($data['course_details']);
    ?>
 
     	<h2 class="display-bar">Course details:</h2><br>
-      <div class="display-bar"> <img class="avatar" alt="course_image" src= <?php echo $data['img']?>><?php echo $data['name']; ?>   </div><br>
-      <div class="display-bar">Course number: <?php echo $data['course_number']; ?></div><br>
-    	<div class="display-bar">Description : <?php echo $data['description']; ?></div><br>
+      <div class="display-bar"> <img class="avatar" alt="course_image" src= <?php echo $data['dynamic_view']['img']?>><?php echo $data['dynamic_view']['name']; ?>   </div><br>
+      <div class="display-bar">Course number: <?php echo $data['dynamic_view']['course_number']; ?></div><br>
+    	<div class="display-bar">Description : <?php echo $data['dynamic_view']['description']; ?></div><br>
 
-    <!--	<div class="display-bar">Current enrolled students : <?php echo (implode(", ",$data['students'])); ?></div><br>-->
+    <!--	<div class="display-bar">Current enrolled students : <?php// echo (implode(", ",$data['students'])); ?></div><br>-->
     <?php }
 
-    elseif(isset($_GET['id']) && empty($data)){ ?>
+    if(isset($_GET['id']) && empty($data['dynamic_view'])){ ?>
 
       <h2 class="business-err"> We cannot find the course you requested. please try again.</h2>
      <?php } ?>

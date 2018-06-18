@@ -5,7 +5,7 @@
 
 <nav>
   <div class="nav-bar">
-    <a href="home/courses/courseRegister">Add new course</a>
+
   <a href="#">Logo</a> |
    <a href="#">School</a> |
    <a href="#">Administration</a> |
@@ -20,7 +20,7 @@
 
 
 <div class="list-container">
-  <h2>Courses: </h2>
+  <h2>Courses:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a class="link-button" href="/home/courses/courseRegister">Add </a> </h2>
    <ul>
    <?php
 
@@ -36,7 +36,7 @@
    </ul>
 </div><!-- students list -->
 <div class="main-container">
-  <h2>Main container:</h2>
+
 
  <?php
 

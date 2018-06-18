@@ -6,14 +6,14 @@ class HomeController{
 //get the $args array that containd the inner class and method the screen controller should run
   public function homeAction($args){
 
-   
+
 
 //  if($args['controller']!=null){
     $sub_controller = new $args[0]();
     $sub_action = $args[1];
   //}
 
-    echo "this is the sub action: ".$sub_action;
+    //echo "this is the sub action: ".$sub_action;
 
 
    $courses = new CoursesController();
@@ -32,14 +32,14 @@ class HomeController{
   }
 
 
-  call_user_func_array($callable_param,[]);
+  $dynamic_view = call_user_func_array($callable_param,[]);
    $view_name = str_replace("Action", "View", $sub_action) ;
    $_POST['main_container_view']= $view_name;
-
+   $data['dynamic_view'] = $dynamic_view;
    $data['course_list']=$arr;
    $data['courses_count']=$course_count;
 
-   print_r($_POST);
+
    View::render('homeView',$data);
 
 

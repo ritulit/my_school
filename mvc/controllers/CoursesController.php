@@ -34,13 +34,12 @@ public function listAllThumbnailAction() {
    }
 
 public function courseDetailsAction(){
-  $model = new CoursesModel();
-  //validate user_id
-     //get the id of the user
-     $data = Array();
-     //Call the model for users, pass filter (id=45)
-    // if(isset($_GET['id'])){
-     $data =   $model->get_course('id',$_GET['id']);
+     $model = new CoursesModel();
+     $mydata = Array();
+     $mydata  =   $model->get_course('id',$_GET['id']);
+     //print_r($mydata);
+     return $mydata;
+
     // }
 
 
@@ -80,7 +79,7 @@ public function courseRegisterAction() {
           $data=$errors;
             $_POST['success']="false";
           //  header('location: courseRegister');
-          header("url=home/courses/courseRegister");
+          header("url=/home/courses/courseRegister");
 
           //  return false;
 
@@ -92,7 +91,7 @@ public function courseRegisterAction() {
           $this->course_number = $_POST['course_number'];
           $this->course_descriptin = trim($_POST['course_description']);
           $model->create_course($this->course_name,$this->course_number, $this->course_description, $filename=null);
-            header("url=home/");
+            header("location: /home/");
             $_POST['success']="true";
           //  return true;
 
@@ -105,7 +104,7 @@ public function courseRegisterAction() {
           $filename =  $utilities->imageUpload('course_image', COURSE_IMAGE_UPLOADS, $this->course_number);
           $this->course_filename = $filename;
           $model->create_course($this->course_name,$this->course_number, $this->course_description,   $this->course_filename);
-          header("url=home/");
+          header("location: /home/");
           $_POST['success']="true";
         }
 
@@ -115,6 +114,7 @@ public function courseRegisterAction() {
 
 
       }
+      return $data;
 
    }
 

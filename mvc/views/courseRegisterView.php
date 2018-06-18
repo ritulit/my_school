@@ -21,7 +21,7 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
         <?php
         //var_dump($data);
 
-        foreach($data as $value){
+       foreach($data['dynamic_view'] as $value){
 
           echo $value;} ?>
 

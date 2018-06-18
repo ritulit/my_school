@@ -14,9 +14,19 @@
 	font-weight: bold;
 }*/
 
+a , a:visited{
+text-decoration: none;
+color:blue;
+}
+a:hover{
+	color: silver;
+}
 ul{
 list-style: none;
 
+}
+.link-button{
+	font-size: 16px;
 }
 .temp-element{
 position:fixed;
