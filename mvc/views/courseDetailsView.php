@@ -22,7 +22,7 @@
    ?>
 
     	<h2 class="display-bar">Course details:</h2><br>
-      <div class="display-bar"> <img class="avatar" alt="course_image" src= <?php echo $data['dynamic_view']['img']?>><?php echo $data['dynamic_view']['name']; ?>   </div><br>
+      <div class="display-bar"> <img class="single-display-avatar" alt="course_image" src= <?php echo $data['dynamic_view']['img']?>> <h3><?php echo $data['dynamic_view']['name']; ?></h3>   </div><br>
       <div class="display-bar">Course number: <?php echo $data['dynamic_view']['course_number']; ?></div><br>
     	<div class="display-bar">Description : <?php echo $data['dynamic_view']['description']; ?></div><br>
 
