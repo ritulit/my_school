@@ -47,7 +47,7 @@ class CoursesModel {
        $data = $data[0];
        if(!empty($data) &&($data['img']==null || $data['img']=="")){$data['img']="\"".COURSE_DEFAULT_IMAGE."\"";}elseif(!empty($data)){ $data['img'] ="\"".COURSE_IMAGE_UPLOADS.$data['img']."\"";}
        if(empty($data)){return $data;}
-        //  $data['students'] = $someArr;
+
         return $data;
 
 
@@ -58,8 +58,44 @@ class CoursesModel {
             global $instance;
             global $_myDB;
      $arr = Array (['name'=>$course_name, 'course_number'=>$course_number, 'description'=>$course_description, 'img'=>$course_image]);
-      //  print_r($arr);
-      $instance->insertToDB("courses",$arr);
+     $instance->insertToDB("courses",$arr);
 
-}
+     }
+///////////////////////////////////////////////////
+    public function edit_course($course_id,$course_number,$course_name, $course_description, $course_image){
+      global $instance;
+      $course=$this->get_course("id",$course_id);
+
+      if(!empty($course) && $course['is_deleted']==0){
+      echo "all ok";
+        $data = Array(['id'=>$course_id,'course_number'=>$course_number,'name'=>$course_name, 'description'=>$course_description, 'img'=>$course_image]);
+        $instance->insertToDBToEdit("courses",$data);
+        return true;
+      }else{
+        echo " this course doesnt exist";
+        return false;
+      }
     }
+//////////////////////////////////////////////////////////
+      public function delete_app_course($course_id, $course_is_deleted){
+        global $instance;
+        $course=$this->get_course($course_id);
+        if( $course['is_deleted']==0){
+          $data = Array(['name'=>$course_name, 'description'=>$course_description, 'img'=>$course_image]);
+          $instance->insertToDB("courses",$data);
+        }else{
+          echo " this course doesnt exist";
+          return false;
+        }
+
+
+
+
+    }
+
+
+    //this is a function not to be used for applicative usage. a course cannot be applicatively deleted
+    public function delete_course($id){
+
+    }
+  }
