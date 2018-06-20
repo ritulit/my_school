@@ -6,9 +6,9 @@
 <nav>
   <div class="nav-bar">
 
-  <a href="#">Logo</a> |
-   <a href="#">School</a> |
-   <a href="#">Administration</a> |
+  <a href="/home/">Logo</a> |
+   <a href="/home/">School</a> |
+   <a href="/administration/">Administration</a> |
    <a href="#">Logout</a><img class="avatar" src="/img/administrator.jpg" alt="admin image" >
  </div>
 </nav>
