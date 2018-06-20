@@ -126,7 +126,11 @@ public function editCourseAction(){
 
 }
 
-public function deleteCourseAction($course_number){
+public function deleteCourseAction($id){
+  $utilities = new Utilities();
+  $model = new CoursesModel();
+
+
 
   //delete course from courses2student
   // remove the joining of the course with students
