@@ -16,6 +16,8 @@ const DB_USERNAME  = 'alma';
 const DB_PASSWORD  = '12345';
 const DB_NAME   =    'the_school';
 
+const PRD_SERVER_HOST = 'ritulit.tk';
+
 const PRD_DB_HOST   =    'localhost';
 const PRD_DB_USERNAME  = 'jb_ritulit';
 const PRD_DB_PASSWORD  = '12345';
