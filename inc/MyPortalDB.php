@@ -104,7 +104,7 @@ class MyPortalDB implements Database{
 
 
         $query .= rtrim($addition,",");
-    //echo $query;
+    echo $query;
   //  die();
          //add here the ON DUPLICATE code to allow editing of values for an exisiting course
 
@@ -118,7 +118,7 @@ class MyPortalDB implements Database{
 
     }
 
-  
+
  //$source is the table name, $data is the assoc array of column names and values, $conditions is a string of the booloan conditions of where operator
     public function editFromDB($source, $data, $condition=null){
       global $instance;

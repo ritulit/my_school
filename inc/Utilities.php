@@ -9,7 +9,9 @@ class Utilities {
       $filename = $new_name.".".$filename_ext;
       $dest_path  = sprintf('%s/%s/%s',rtrim($_SERVER['DOCUMENT_ROOT'], "/"), trim($dest , "/"), $filename);
       $is_success = move_uploaded_file($_FILES[$file_arr_name]['tmp_name'], $dest_path);
-      if($is_success) {return $filename;}
+      if($is_success) {
+        echo "file upload was done";
+        return $filename;}
         else{
           echo "file upload was unssuseccful. please try again by editing the course.";
           return false;}
@@ -18,7 +20,7 @@ class Utilities {
 
 
   public function imageRemove(){
-    
+
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
