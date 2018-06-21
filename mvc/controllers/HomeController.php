@@ -18,7 +18,7 @@ class HomeController{
 
    $courses = new CoursesController();
    $arr = $courses->listAllThumbnailAction();
-   $course_count = $courses->countAllAction('courses');
+   $course_count = $courses->countAllAction('courses','is_deleted',"0");
 
 
   $callable_param = [$sub_controller, $sub_action];

@@ -22,18 +22,21 @@ class CoursesModel {
         }*/
     }
 
-    public function count_group($group, $filter_type=null, $filter_value=null){
+    public function count_group($group, $filter_type, $filter_value){
       //add count query that returns an int
       global $instance;
       $q = "select count(*) from ". $group. " where 1";
       if($filter_type!=null && $filter_value!=null) {
           $q .= ' AND '.$filter_type.'='. $filter_value;
+
           $res= $instance->query_2_array($q);
+
             return $res;
 
       }else {$res= $instance->query_2_array($q);
+      
             return $res;}
-    }
+      }
 
     public function get_course($type,$value) {
         global $instance;
@@ -61,14 +64,14 @@ class CoursesModel {
      $instance->insertToDB("courses",$arr);
 
      }
-///////////////////////////////////////////////////
-    public function edit_course($course_id,$course_number,$course_name, $course_description, $course_image){
+
+    public function edit_course($course_id,$course_number,$course_name, $course_description, $course_image, $course_deleted){
       global $instance;
       $course=$this->get_course("id",$course_id);
 
       if(!empty($course) && $course['is_deleted']==0){
       echo "all ok";
-        $data = Array(['id'=>$course_id,'course_number'=>$course_number,'name'=>$course_name, 'description'=>$course_description, 'img'=>$course_image]);
+        $data = Array(['id'=>$course_id, 'course_number'=>$course_number,'name'=>$course_name, 'description'=>$course_description, 'img'=>$course_image, 'is_deleted'=>$course_deleted]);
         $instance->insertToDBToEdit("courses",$data);
         return true;
       }else{
@@ -77,24 +80,9 @@ class CoursesModel {
       }
     }
 //////////////////////////////////////////////////////////
-      public function delete_app_course($course_id, $course_is_deleted){
-        global $instance;
-        $course=$this->get_course($course_id);
-        if( $course['is_deleted']==0){
-          $data = Array(['name'=>$course_name, 'description'=>$course_description, 'img'=>$course_image]);
-          $instance->insertToDB("courses",$data);
-        }else{
-          echo " this course doesnt exist";
-          return false;
-        }
 
 
 
-
-    }
-
-
-    //this is a function not to be used for applicative usage. a course cannot be applicatively deleted
     public function delete_course($id){
 
     }
