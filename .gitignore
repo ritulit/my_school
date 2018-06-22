@@ -1,0 +1,14 @@
+
+
+# Log file #
+*.log
+
+
+
+
+# Package Files #
+*.zip
+
+
+#user data#
+img/user_uploads
