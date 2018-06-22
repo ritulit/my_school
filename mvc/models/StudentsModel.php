@@ -13,7 +13,7 @@ class StudentsModel {
        //  Filter:
         if($type!=null && $value!=null) {
             $q .= ' AND '.$type.'='. $value;
-          
+
               return $instance->query_2_array($q);
 
         }else {return $instance->query_2_array($q);}
@@ -72,7 +72,7 @@ class StudentsModel {
       $student=$this->get_student("id",$student_id);
 
       if(!empty($student) && $student['is_deleted']==0){
-      echo "all ok";
+
         $data = Array(['id'=>$student_id,'name'=>$student_name, 'phone'=>$student_phone, 'email'=>$student_email,'img'=>$student_image, 'is_deleted'=>$student_deleted]);
         $instance->insertToDBToEdit("students",$data);
         return true;

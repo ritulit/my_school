@@ -157,12 +157,7 @@ public function courseRegisterAction() {
             $_POST['success']="false";
 
           header("url=/home/courses/courseEdit?id=".$_GET['id']);
-            echo "returning one of the factors is false";
-            echo "name is $name ";
-            echo "number is $number ";
-            echo " description is $description ";
-          //  echo "filename is $filename";
-          //var_dump($data);
+
             return $data;
 
 
@@ -170,11 +165,8 @@ public function courseRegisterAction() {
 
         if( $name && $number && $description && $filename==false){
           $this->course_name = $_POST['course_name'];
-            echo "course name is $this->course_name ";
           $this->course_number = $_POST['course_number'];
-            echo "course name is $this->course_number ";
           $this->course_description = trim($_POST['course_description']);
-            echo "course name is $this->course_desc";
           $model->edit_course($_GET['id'], $this->course_number,$this->course_name, $this->course_description, $filename=null,0);
             header("location: /home/");
             $_POST['success']="true";

@@ -21,7 +21,7 @@
 
    ?>
 
-    	<h2 class="display-bar">Student details:&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   <a class="link-button" href="/home/students/courseEdit?id=<?php echo $data['dynamic_view']['id'] ?>" >Edit</a></h2><br>
+    	<h2 class="display-bar">Student details:&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   <a class="link-button" href="/home/students/studentEdit?id=<?php echo $data['dynamic_view']['id'] ?>" >Edit</a></h2><br>
       <div class="display-bar"> <img class="single-display-avatar" alt="student_image" src= <?php echo $data['dynamic_view']['img']?>> <h3><?php echo $data['dynamic_view']['name']; ?></h3>   </div><br>
       <div class="display-bar">Phone number: <?php echo $data['dynamic_view']['phone']; ?></div><br>
     	<div class="display-bar">Email : <?php echo $data['dynamic_view']['email']; ?></div><br>

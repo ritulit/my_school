@@ -115,8 +115,8 @@ public function studentRegisterAction() {
 
    }
 //////////////////////////////////////////////////////////////////////////////////////
-    public function courseEditAction(){
-    $model = new CoursesModel();
+    public function studentEditAction(){
+    $model = new StudentsModel();
 
     if(!isset($_POST['submitted'])){
     $res = $this->studentDetailsAction();
@@ -125,48 +125,43 @@ public function studentRegisterAction() {
     if(isset($_POST['submitted']) && isset($_POST['edit'])){
 
       if(isset($_POST['submitted'])){
-        $name = $this->evaluateCourseName($_POST['course_name']);
-        $number = $this->evaluateCourseNumberForEdit($_POST['course_number']);
-        $description = $this->evaluateCourseDesc(trim($_POST['course_description']));
+        $name = $this->evaluateStudentName($_POST['student_name']);
+        $phone = $this->evaluateStudentPhone($_POST['student_phone']);
+        $email = $this->evaluateStudentEmailForEdit($_POST['student_email']);
       //  if(!empty($_FILES['course_image']) && $_FILES['course_image']['error'] == 0 ){
         //    $filename = $this->evaluateCourseImage($_FILES['course_image']['type']);
         //  }
 
       //  if(!$name || !$number || !$description || $filename==false){
-          if(!$name || !$number || !$description ){
+          if(!$name || !$phone || !$email ){
           if($name==false){$errors['student_name']="course name is invalid. minimum 1 char <br>";}//{echo "course name is invalid. minimum 1 char <br>";}
-          if($number==false){$errors['course_number_invalid']="course number is invalid.<br>";}//{echo "course number is invalid.<br>";}
-          if($description==false){$errors['course_description']="course description is invalid . minimum 1 char .<br>";}//{echo  "course description is invalid . minimum 1 char .<br>";}
+          if($phone==false){$errors['student_phone_invalid']="phone number is invalid.<br>";}//{echo "course number is invalid.<br>";}
+          if($email==false){$errors['student_email']="email is invalid . minimum 1 char .<br>";}//{echo  "course description is invalid . minimum 1 char .<br>";}
         //  if(isset($_FILES['course_image']) && $filename===false){$errors['file_type']="file type is not adquate. please upload only images<br>";}//{echo "file type is not adquate. please upload only images<br>";}
         //  elseif(isset($_FILES['course_image']) && ($_FILES['course_image']['name'] !="") && ($_FILES['course_image']['error'] != 0) ){$errors['file_general']="something is wrong with the file. plese try again or replace it.";}//{echo "something is wrong with the file. plese try again or replace it.";}
-          $data['name']=$_POST['course_name'];
-          $data['course_number']=$_POST['course_number'];
-          $data['description']=$_POST['course_description'];
+          $data['name']=$_POST['student_name'];
+          $data['phone']=$_POST['student_phone'];
+          $data['email']=$_POST['student_email'];
           $data['errors']=$errors;
 
 
             $_POST['success']="false";
 
-          header("url=/home/courses/courseEdit?id=".$_GET['id']);
-            echo "returning one of the factors is false";
-            echo "name is $name ";
-            echo "number is $number ";
-            echo " description is $description ";
-          //  echo "filename is $filename";
-          //var_dump($data);
+          header("url=/home/students/studentEdit?id=".$_GET['id']);
+
             return $data;
 
 
         }
 
-        if( $name && $number && $description && $filename==false){
-          $this->course_name = $_POST['course_name'];
-            echo "course name is $this->course_name ";
-          $this->course_number = $_POST['course_number'];
-            echo "course name is $this->course_number ";
-          $this->course_description = trim($_POST['course_description']);
-            echo "course name is $this->course_desc";
-          $model->edit_course($_GET['id'], $this->course_number,$this->course_name, $this->course_description, $filename=null,0);
+        if( $name && $phone && $email && $filename==false){
+          $this->student_name = $_POST['student_name'];
+            echo "student name is $this->student_name ";
+          $this->student_phone = $_POST['student_phone'];
+            echo "course name is $this->student_phoner ";
+          $this->student_email= trim($_POST['student_email']);
+            echo "student email is $this->student_email";
+          $model->edit_student($_GET['id'],$this->student_name, $this->student_phone, $this->student_email, $filename=null,0);
             header("location: /home/");
             $_POST['success']="true";
                   echo "returning filename is false";
@@ -174,13 +169,13 @@ public function studentRegisterAction() {
 
         }
 
-        if($name && $number && $description && $filename){
-          $this->course_name = $_POST['course_name'];
-          $this->course_number = $_POST['course_number'];
-          $this->course_description = trim($_POST['course_description']);
-          $filename =  $utilities->imageUpload('course_image', COURSE_IMAGE_UPLOADS, $this->course_number);
-          $this->course_filename = $filename;
-          $model->edit_course($_GET['id'], $this->course_number,$this->course_name, $this->course_description,  $this->course_filename,0);
+        if($name && $phone && $email && $filename){
+          $this->student_name = $_POST['student_name'];
+          $this->student_phone = $_POST['student_phone'];
+          $this->student_email = trim($_POST['student_email']);
+          $filename =  $utilities->imageUpload('student_image', STUDENT_IMAGE_UPLOADS, $this->student_email);
+          $this->student_filename = $filename;
+          $model->edit_course($_GET['id'], $this->student_name, $this->student_phone, $this->student_email,  $this->student_filename,0);
 
           header("location: /home/");
           $_POST['success']="true";
@@ -203,7 +198,7 @@ public function studentRegisterAction() {
     if(!isset($_POST['edit']) && isset($_POST['delete'])){
         echo "beggining delete";
         $is_deleted = 1;
-        $model->edit_course($_GET['id'],null,null,null,null, 1);
+        $model->edit_student($_GET['id'],null,null,null,null, 1);
 
         header("location: /home/");
         $_POST['success']="true";
@@ -218,36 +213,11 @@ public function studentRegisterAction() {
 
 
 
-public function courseDeleteAction(){
-  $utilities = new Utilities();
-  $model = new CoursesModel();
-
-  //validate course exists
-
-  //if course exists
- echo "this is the get id: ". $_GET['id'];
-  if($model->delete_course("id", $_GET['id'])){
-    header("location: /home/");
-    $_POST['delete_success']="true";
-    echo "post delete success = ". $_POST['delete_success'];
-  }else{
-    //  header("location: /home/");
-      $_POST['delete_success']="false";
-      echo "post delete success  =". $_POST['delete_success'];
-  }
-//$utulities->imageRemove();
-  //$model
 
 
 
 
-  //delete course from courses2student
-  // remove the joining of the course with students
-  //remove the course inage from images folder
 
-
-
-}
 
 public function countAllAction($students, $filter,$value){
   $model = new StudentsModel();
@@ -269,7 +239,7 @@ private function evaluateStudentPhone($number){
          if(is_numeric($number[$i])){
            $clean_phone.=$number[$i];
          }
-         var_dump($clean_phone);
+        
         $regex = "^[0-9]{1}[0-9]{9,13}$";
         if(!preg_match("/$regex/",$clean_phone)){
             $errors[course_number]="student phone should be up to 11 digits.";
@@ -278,21 +248,17 @@ private function evaluateStudentPhone($number){
 
 
       }
-private function evaluateCourseNumberForEdit($number){
+private function evaluateStudentEmailForEdit($email){
 
-      $regex = "^[0-9]{1}[0-9]{3,12}$";
-      if(!preg_match("/$regex/", $number)){
-        $errors[course_number]="course number should be 4-6 digits.";
-        echo "course nuber should be 4-6 digits.";
-        return false;}else{return true;}
+  if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+      $errors[student_email]="email pattern is wrong.";
+      return false;}else{return true;}
 
      }
 
 
       //evaluating the description is minimum 1 word
 private function evaluateStudentEmail($email){
-
-//  $regex = "^[a-zA-Z0-9\-\_\/\s,.]+";
  if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
      $errors[student_email]="email pattern is wrong.";
      return false;}
