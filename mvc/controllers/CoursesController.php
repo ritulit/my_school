@@ -60,10 +60,6 @@ public function courseRegisterAction() {
     $utilities = new Utilities();
     $model = new CoursesModel();
     $data = Array();
-    $name=false;
-    $number=false;
-    $description=false;
-    $filename = null;
     $errors= Array();
 
 
@@ -72,7 +68,7 @@ public function courseRegisterAction() {
         $number = $this->evaluateCourseNumber($_POST['course_number']);
         $description = $this->evaluateCourseDesc(trim($_POST['course_description']));
         if(isset($_FILES['course_image']) && $_FILES['course_image']['error'] == 0 ){
-            $filename = $this->evaluateCourseImage($_FILES['course_image']['type']);
+            $filename = $utilities->evaluateImageType($_FILES['course_image']['type']);
           }
 
         if(!$name || !$number || !$description || $filename==false){

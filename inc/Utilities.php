@@ -3,7 +3,15 @@ require_once('inc/autoload.php');
 class Utilities {
 
 
-  public function imageUpload($file_arr_name, $dest, $new_name){
+public function evaluateImageType($imageType){
+    if(substr($imageType, 0, 5) !== "image"){return false;}
+    else{return true;}
+
+  }
+
+
+public function imageUpload($file_arr_name, $dest, $new_name){
+    var_dump($file_arr_name);
       $arr = explode(".", $_FILES[$file_arr_name]['name'] );
       $filename_ext =end($arr);
       $filename = $new_name.".".$filename_ext;
@@ -19,7 +27,19 @@ class Utilities {
 
 
 
-  public function imageRemove(){
+public function imageRemove(){
+
+  }
+//not for omparing null values
+public function compareValues($first_value, $second_value){
+if($first_value==null && $second_value==null){return false;}
+if($first_value !== $second_value){return false;}
+else{return true;}
+
+}
+//when  a successful login takes place a session is created and added to the user. it will be ridden over upon logout or a new login so only one active session per user is alowed
+  public function sessionGenerator(){
+
 
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,3 +75,4 @@ class Utilities {
 
 
 }
+?>

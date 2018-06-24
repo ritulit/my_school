@@ -15,7 +15,7 @@ spl_autoload_register(function($class_name) {
       $path = sprintf('inc/%s.php', $class_name);
     }
 
- 
+
 
     include_once($path);
 

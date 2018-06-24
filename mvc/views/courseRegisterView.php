@@ -14,12 +14,10 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
     <body>
 
-    <!--<?php //print_r($_POST); ?>-->
 
   <h2>Add a new course:</h2>
       <div>
         <?php
-        //var_dump($data['dynamic_view']);
 
        foreach($data['dynamic_view'] as $value){
 

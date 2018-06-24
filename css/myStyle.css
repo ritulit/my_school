@@ -90,6 +90,25 @@ overflow: auto;
 background-color: white;
 
 }
+.ghost-list-container{
+visibility:hidden;
+position: relative;
+top: 20px;
+bottom: 40px;
+left: 0;
+height:95%;
+border: solid black 1px;
+border-radius: 3%;
+width : 15%;
+margin : 5px;
+margin-left:10px;
+padding-left:10px;
+font-size: 18px;
+vertical-align:middle;
+overflow: auto;
+background-color: white;
+
+}
 
 
 .nav-bar{
@@ -158,8 +177,8 @@ margin: 5px;
 
 .single-display-avatar{
 
-width: 4em;
-height: 4em;
+width: 5em;
+height: 5em;
 border-radius: 50%;
 margin: 5px;
 

@@ -51,10 +51,6 @@ public function studentRegisterAction() {
     $utilities = new Utilities();
     $model = new StudentsModel();
     $data = Array();
-    $name=false;
-    $phone=false;
-    $email=false;
-    $filename = null;
     $errors= Array();
 
 
@@ -63,12 +59,12 @@ public function studentRegisterAction() {
         $phone= $this->evaluateStudentPhone($_POST['student_phone']);
         $email = $this->evaluateStudentEmail(trim($_POST['student_email']));
         if(isset($_FILES['student_image']) && $_FILES['student_image']['error'] == 0 ){
-            $filename = $this->evaluateStudentImage($_FILES['student_image']['type']);
+            $filename = $utilities->evaluateImageType($_FILES['student_image']['type']);
           }
 
         if(!$name || !$phone || !$email || $filename==false){
           if($name==false){$errors['student_name']="student name is invalid. minimum 1 char <br>";}//{echo "course name is invalid. minimum 1 char <br>";}
-          if($phone==false){$errors['phone_number_invalid']="student phone is invalid.<br>";}//{echo "course number is invalid.<br>";}
+          if($phone==false){$errors['phone_number_invalid']="manager phone should be between 9 to 13 digits..<br>";}//{echo "course number is invalid.<br>";}
           if($email==false){$errors['student_email']="student email is invalid .<br>";}//{echo  "course description is invalid . minimum 1 char .<br>";}
           if(isset($_FILES['student_image']) && $filename===false){$errors['file_type']="file type is not adquate. please upload only images<br>";}//{echo "file type is not adquate. please upload only images<br>";}
           elseif(isset($_FILES['student_image']) && ($_FILES['student_image']['name'] !="") && ($_FILES['student_image']['error'] != 0) ){$errors['file_general']="something is wrong with the file. plese try again or replace it.";}//{echo "something is wrong with the file. plese try again or replace it.";}
@@ -164,8 +160,8 @@ public function studentRegisterAction() {
           $model->edit_student($_GET['id'],$this->student_name, $this->student_phone, $this->student_email, $filename=null,0);
             header("location: /home/");
             $_POST['success']="true";
-                  echo "returning filename is false";
-        return $data;
+
+           return $data;
 
         }
 
@@ -179,7 +175,7 @@ public function studentRegisterAction() {
 
           header("location: /home/");
           $_POST['success']="true";
-            echo "returning all of the factors are valid";
+
           return $data;
         }
 
@@ -189,7 +185,7 @@ public function studentRegisterAction() {
 
 
       }
-        echo "returning at the end";
+
       return $data;
 
 
@@ -239,10 +235,10 @@ private function evaluateStudentPhone($number){
          if(is_numeric($number[$i])){
            $clean_phone.=$number[$i];
          }
-        
-        $regex = "^[0-9]{1}[0-9]{9,13}$";
+
+        $regex = "^[0-9]{1}[0-9]{8,13}$";
         if(!preg_match("/$regex/",$clean_phone)){
-            $errors[course_number]="student phone should be up to 11 digits.";
+            $errors['student_phone']="student phone should be between 9 to 13 digits.";
               return false;}
         else{return true;}
 
@@ -251,7 +247,7 @@ private function evaluateStudentPhone($number){
 private function evaluateStudentEmailForEdit($email){
 
   if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-      $errors[student_email]="email pattern is wrong.";
+      $errors['student_email']="email pattern is wrong.";
       return false;}else{return true;}
 
      }
@@ -260,7 +256,7 @@ private function evaluateStudentEmailForEdit($email){
       //evaluating the description is minimum 1 word
 private function evaluateStudentEmail($email){
  if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-     $errors[student_email]="email pattern is wrong.";
+     $errors['student_email']="email pattern is wrong.";
      return false;}
 
   $model = new StudentsModel();
@@ -272,8 +268,7 @@ private function evaluateStudentEmail($email){
           return true;}
 
   if(!empty($res)){
-    $errors[student_email_unique]="email already exists. should be unique.";
-    //echo "course number already exists. should be unique.";
+    $errors['student_email_unique']="email already exists. should be unique.";
     return false;}
 
 return true;

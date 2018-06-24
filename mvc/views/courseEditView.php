@@ -26,10 +26,9 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
           echo $value;}
 
- echo rtrim(array_pop(explode("/",$data['dynamic_view']['img'])),"\"");
-
            ?>
 
+      <img class="single-display-avatar" alt="manager_image" src=<?php echo $data['dynamic_view']['img']  ?>>
       <form action="" method="post" enctype="multipart/form-data" >
        <div id="course_general_err" class="regErrorMessage"></div><br>
        <div class="display-bar"><input type="text" id="course_name" name="course_name"  placeholder="insert course name" value="<?php echo $data['dynamic_view']['name'] ?>"></div>

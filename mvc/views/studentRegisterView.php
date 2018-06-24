@@ -15,12 +15,10 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
     <body>
 
-    <!--<?php //print_r($_POST); ?>-->
 
   <h2>Add a new student:</h2>
       <div>
         <?php
-        //var_dump($data['dynamic_view']);
 
        foreach($data['dynamic_view'] as $value){
 
@@ -28,8 +26,7 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
       <form action="" method="post" enctype="multipart/form-data" >
        <div id="student_general_err" class="regErrorMessage"></div><br>
-       <div class="display-bar"><input type="text" id="student_name" name="student_name"  placeholder="insert student name" value="<?php echo $_POST['student_name'] ?>"></div>
-       <div id="student_name_err" class="regErrorMessage"></div><br>
+       <div class="display-bar"><input type="text" id="student_name" name="student_name"  placeholder="insert student name" value="<?php echo $_POST['student_name'] ?>"></div><div id="student_name_err" class="regErrorMessage"></div><br>
        <div class="display-bar"><input type="text" id="student_phone" name="student_phone"  placeholder="insert phone number" value="<?php echo $_POST['student_phone'] ?>"></div><div id="student_phone_err" class="regErrorMessage"></div><br>
        <div class="display-bar"><input type="text" id="student_email" name="student_email"  placeholder="insert email" value="<?php echo $_POST['student_email'] ?>"></div><div id="student_email_err" class="regErrorMessage"></div><br>
        <div class="display-bar"><input type="file" id="student_image" name="student_image" accept="image/*" ></div><div id="student_image_err" class="regErrorMessage"></div>
