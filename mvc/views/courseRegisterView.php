@@ -19,9 +19,9 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
       <div>
         <?php
 
-       foreach($data['dynamic_view'] as $value){
+       foreach($_POST['course_register_errors'] as $value){
 
-          echo $value;} ?>
+          echo $value."<br>";} ?>
 
       <form action="" method="post" enctype="multipart/form-data" >
        <div id="course_general_err" class="regErrorMessage"></div><br>

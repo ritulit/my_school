@@ -24,9 +24,10 @@ spl_autoload_register(function($class_name) {
 
 $instance = MyPortalDB::getInstance();
 $_myDB = $instance->getConnection();
+$utilities = Utilities::getInstance();
 
 
-// require_once($path);
+
 
 
 

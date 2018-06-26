@@ -3,6 +3,7 @@
 class ManagersController {
 
 private $manager_name,$manager_role, $manager_phone, $manager_email,$manager_password, $manager_filename;
+public $errors = Array();
 
 public function listAllAction() {
 
@@ -41,19 +42,17 @@ public function listAllThumbnailAction() {
 
 public function managerDetailsAction(){
      $model = new ManagersModel();
-     $mydata = Array();
-     $mydata  =   $model->get_manager('id',$_GET['id']);
-     $mydata['role_name'] = $model->get_manager_role($mydata['role']);
-    // print_r($mydata);
-     return $mydata;
+     $data = Array();
+     $data =   $model->get_manager('id',$_GET['id']);
+     $data['role_name'] = $model->get_manager_role($data['role']);
+
+     return $data;
 
    }
 
 public function managerRegisterAction() {
-    $utilities = new Utilities();
+    global $utilities;
     $model = new ManagersModel();
-    $data = Array();
-    $errors= Array();
 
 
       if(isset($_POST['submitted']))
@@ -69,21 +68,15 @@ public function managerRegisterAction() {
           }
 
         if(!$name || !$phone || !$email || !$role || !$password || !$retype_password || $filename==false){
-          if($name==false){$errors['manager_name']="manager name is invalid. minimum 1 char <br>";}//{echo "course name is invalid. minimum 1 char <br>";}
-          if($phone==false){$errors['manager_number_invalid']="manager phone should be between 9 to 13 digits.<br>";}//{echo "course number is invalid.<br>";}
-          if($email==false){$errors['manager_email']="manager email is invalid .<br>";}//{echo  "course description is invalid . minimum 1 char .<br>";}
-          if($role==false){$errors['manager_role']="manager role is invalid .<br>";}
-          if($password==false){$errors['manager_password']="Invalid password. must be 6-10 chars long with at least 1 number, 1 letter and no special chars.<br>";}
-          if($retype_password==false){$errors['manager_retype_password']="retype password doesn't match the password value.<br>";}
-          if(isset($_FILES['manager_image']) && $filename===false){$errors['file_type']="file type is not adquate. please upload only images<br>";}//{echo "file type is not adquate. please upload only images<br>";}
-          elseif(isset($_FILES['manager_image']) && ($_FILES['manager_image']['name'] !="") && ($_FILES['manager_image']['error'] != 0) ){$errors['file_general']="something is wrong with the file. plese try again or replace it.";}//{echo "something is wrong with the file. plese try again or replace it.";}
-          $data=$errors;
+          if($retype_password==false){$this->errors['password_retype']=$utilities->createUserMessage("password_retype");}
+          if(isset($_FILES['manager_image']) && $filename===false){$this->errors['file_type']=$utilities->createUserMessage("file_type");}
+          elseif(isset($_FILES['manager_image']) && ($_FILES['manager_image']['name'] !="") && ($_FILES['manager_image']['error'] != 0) ){$this->errors['file_general']=$utilities->createUserMessage("file_general");}
 
 
             $_POST['success']="false";
-          header("url=/administration/managers/managerRegister");
+            $_POST['manager_register_errors']=$this->errors;
+            header("url=/administration/managers/managerRegister");
 
-          //return $data;
 
 
         }
@@ -93,12 +86,10 @@ public function managerRegisterAction() {
           $this->manager_phone = $_POST['manager_phone'];
           $this->manager_email = trim($_POST['manager_email']);
           $this->manager_role = $_POST['manager_role'];
-          //$this->manager_password = $_POST['manager_password'];
           $this->manager_password =password_hash($_POST['manager_password'],PASSWORD_DEFAULT);
           $model->create_manager($this->manager_name,$this->manager_phone, $this->manager_email,$this->manager_role,$this->manager_password, $filename=null);
             header("location: /administration/");
             $_POST['success']="true";
-          //  return true;
 
         }
 
@@ -107,7 +98,6 @@ public function managerRegisterAction() {
           $this->manager_phone = $_POST['manager_phone'];
           $this->manager_email = trim($_POST['manager_email']);
           $this->manager_role = $_POST['manager_role'];
-          //$this->manager_password = $_POST['manager_password'];
           $this->manager_password = password_hash($_POST['manager_password'],PASSWORD_DEFAULT);
           $filename =  $utilities->imageUpload('manager_image', ADMINISTRATOR_IMAGE_UPLOADS, $this->manager_email);
           $this->manager_filename = $filename;
@@ -116,19 +106,13 @@ public function managerRegisterAction() {
           $_POST['success']="true";
         }
 
-
-
-
-
-
       }
-      return $data;
 
    }
 //////////////////////////////////////////////////////////////////////////////////////
 public function managerEditAction(){
     $model = new ManagersModel();
-    $utilities = new Utilities();
+    global $utilities;
 
     if(!isset($_POST['submitted'])){
     $res = $this->managerDetailsAction();
@@ -151,15 +135,8 @@ public function managerEditAction(){
         //    $filename = $this->evaluateCourseImage($_FILES['course_image']['type']);
         //  }
 
-      //  if(!$name || !$number || !$description || $filename==false){
-          if(!$name || !$phone || !$email || !$role || !$password || !$old_password || !$retype_password ){
-          if($name==false){$errors['manager_name']="course name is invalid. minimum 1 char <br>";}//{echo "course name is invalid. minimum 1 char <br>";}
-          if($phone==false){$errors['manager_phone_invalid']="phone number is invalid.<br>";}//{echo "course number is invalid.<br>";}
-          if($email==false){$errors['manager_email']="email is invalid . minimum 1 char .<br>";}//{echo  "course description is invalid . minimum 1 char .<br>";}
-          if($role==false){$errors['manager_role']="manager role is invalid .<br>";}
-          if($password==false){$errors['manager_password']="Invalid password. must be 6-10 chars long with at least 1 number, 1 letter and no special chars.<br>";}
-          if($old_password==false){$errors['manager_old_password']="manager old password is incorrect.<br>";}
-          if($retype_password==false){$errors['manager_retype_password']="retype password doesn't match the password value.<br>";}
+          if(!$name || !$phone || !$email || !$role || !$password || !$old_password || !$retype_password )//todo || $filename==false){
+          {
 
         //  if(isset($_FILES['course_image']) && $filename===false){$errors['file_type']="file type is not adquate. please upload only images<br>";}//{echo "file type is not adquate. please upload only images<br>";}
         //  elseif(isset($_FILES['course_image']) && ($_FILES['course_image']['name'] !="") && ($_FILES['course_image']['error'] != 0) ){$errors['file_general']="something is wrong with the file. plese try again or replace it.";}//{echo "something is wrong with the file. plese try again or replace it.";}
@@ -168,12 +145,11 @@ public function managerEditAction(){
           $data['email']=$_POST['manager_email'];
           $data['role']=$_POST['manager_role'];
           $data['img']= $_POST['img_holder'];
-          $data['errors']=$errors;
 
 
             $_POST['success']="false";
-
-          header("url=/administration/managers/managerEdit?id=".$_GET['id']);
+            $_POST['manager_edit_errors']=$this->errors;
+            header("url=/administration/managers/managerEdit?id=".$_GET['id']);
 
             return $data;
 
@@ -235,14 +211,6 @@ public function managerEditAction(){
 
   }
 
-
-
-
-
-
-
-
-
 public function countAllAction($managers, $filter,$value){
   $model = new ManagersModel();
   $data =   $model->count_group($managers, $filter,$value);
@@ -252,13 +220,17 @@ public function countAllAction($managers, $filter,$value){
 
    //evaluating the name is minimum 1 word
 private function evaluateManagerName($name){
-      $regex = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
-      if(!preg_match("/$regex/",$name)){return false;}
+  global $utilities;
+        $regex = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
+      if(!preg_match("/$regex/",$name)){
+        $this->errors['name']=$utilities->createUserMessage("name");
+        return false;}
       else{return true;}
       }
-     //valisation for numeric value of up to 6 digits
+     //valisation for numeric value of 8-13 digits
 private function evaluateManagerPhone($number){
-       $clean_phone = "";
+  global $utilities;
+         $clean_phone = "";
          for($i=0; $i<strlen($number); $i++)
          if(is_numeric($number[$i])){
            $clean_phone.=$number[$i];
@@ -266,13 +238,14 @@ private function evaluateManagerPhone($number){
 
         $regex = "^[0-9]{1}[0-9]{8,13}$";
         if(!preg_match("/$regex/",$clean_phone)){
-            $errors['manager_phone']="manager phone should be between 9 to 13 digits.";
+            $this->errors['phone']=$utilities->createUserMessage("phone");
               return false;}
         else{return true;}
 
 
       }
 private function evaluateManagerEmailForEdit($email){
+  global $utilities;
 
   if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
       $errors['manager_email']="email pattern is wrong.";
@@ -283,8 +256,9 @@ private function evaluateManagerEmailForEdit($email){
 
       //evaluating the description is minimum 1 word
 private function evaluateManagerEmail($email){
+  global $utilities;
  if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-     $errors['manager_email']="email pattern is wrong.";
+     $this->errors['email_pattern']=$utilities->createUserMessage("email_pattern");
      return false;}
 
   $model = new ManagersModel();
@@ -296,14 +270,15 @@ private function evaluateManagerEmail($email){
           return true;}
 
   if(!empty($res)){
-    $errors[manager_email_unique]="email already exists. should be unique.";
+    $this->errors['email_exists']=$utilities->createUserMessage("email_exists");
     //echo "course number already exists. should be unique.";
     return false;}
 
-return true;
+   return true;
 }
 
 public function get_manager_role($role_id){
+  global $utilities;
   $model = new ManagersModel();
   $list = $model->get_roles_list();
 
@@ -313,27 +288,36 @@ public function get_manager_role($role_id){
 
 
 private function evaluateManagerRole($role){
+  global $utilities;
   $model = new ManagersModel();
   $list = $model->get_roles_list();
   $res =Array();
   foreach($list as $value){
     array_push($res, $value['id']);
   }
-  if(!in_array($role, $res)){ return false;}
+  if(!in_array($role, $res)){
+    $this->errors['role']=$utilities->createUserMessage("role");
+     return false;}
   else{return true;}
 
 }
 
 private function evaluateManagerPassword($password) {
+  global $utilities;
   $passRegex ="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,10})$";
-  if(!preg_match("/".$passRegex."/",$password)){return false;}
+  if(!preg_match("/".$passRegex."/",$password)){
+    $this->errors['password']=$utilities->createUserMessage("password");
+    return false;}
    return true;
 
 }
 private function evaluateManagerCurrentPasswordForEdit($password){
+global $utilities;
 $model = new ManagersModel();
 $manager = $model->get_manager('id',$_GET['id']);
-if(!password_verify($password, $manager['password'])){return false;}
+if(!password_verify($password, $manager['password'])){
+  $this->errors['password_old']=$utilities->createUserMessage("password_old");
+  return false;}
 else{return true;}
 
 }

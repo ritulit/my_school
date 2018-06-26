@@ -2,6 +2,23 @@
 require_once('inc/autoload.php');
 class Utilities {
 
+  private static $instance = null;
+
+  private function __construct()
+  {
+
+  }
+
+  public static function getInstance()
+  {
+    if(!self::$instance)
+    {
+      self::$instance = new Utilities();
+    }
+
+    return self::$instance;
+  }
+
 
 public function evaluateImageType($imageType){
     if(substr($imageType, 0, 5) !== "image"){return false;}
@@ -60,13 +77,14 @@ else{return true;}
 
 
  function createUserMessage($value){
- global $instance;
+   global $instance;
 
-  /*   if ($_myDB->connect_error) {
-         die("Connection failed: " . $_myDB->connect_error);
-       }*/
 
    $res = $instance->query_2_array("SELECT * FROM user_messages WHERE name ='".$value."'" );
+   if(empty($res)){
+     $res=$instance->query_2_array("SELECT * FROM user_messages WHERE name = \"general\"" );
+     return $res[0]['description'];
+   }
 
    return $res[0]['description'];
 
@@ -75,4 +93,5 @@ else{return true;}
 
 
 }
+$utilities = Utilities::getInstance();
 ?>

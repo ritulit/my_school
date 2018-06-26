@@ -4,9 +4,9 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
 //define("TOKEN_KEY_NAME","token");
 
-const COURSE_IMAGE_UPLOADS = "/img/user_uploads/courses/";
-const STUDENT_IMAGE_UPLOADS = "/img/user_uploads/students/";
-const ADMINISTRATOR_IMAGE_UPLOADS = "/img/user_uploads/administrators/";
+const  COURSE_IMAGE_UPLOADS = "/img/user_uploads/courses/";
+const  STUDENT_IMAGE_UPLOADS = "/img/user_uploads/students/";
+const  ADMINISTRATOR_IMAGE_UPLOADS = "/img/user_uploads/administrators/";
 const  COURSE_DEFAULT_IMAGE = "/img/course.png";
 const  STUDENT_DEFAULT_IMAGE = "/img/student.png";
 const  ADMINISTRATOR_DEFAULT_IMAGE = "/img/administrator.jpg";

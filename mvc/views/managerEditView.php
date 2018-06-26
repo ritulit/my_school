@@ -22,9 +22,9 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
         <?php
 
     //  var_dump($data);
-       foreach($data['dynamic_view']['errors'] as $value){
+       foreach($_POST['manager_edit_errors'] as $value){
 
-          echo $value;}
+          echo $value."<br>";}
 
 
            ?>

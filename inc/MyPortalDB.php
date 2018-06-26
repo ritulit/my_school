@@ -14,21 +14,21 @@ class MyPortalDB implements Database{
 
   // The db connection is established in the private constructor.
   private function __construct()
-  {
-  if($_SERVER['HTTP_HOST']==PRD_SERVER_HOST){$this->_myDB = new mysqli(PRD_DB_HOST, PRD_DB_USERNAME, PRD_DB_PASSWORD, PRD_DB_NAME);}
-  else{$this->_myDB = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);}
+   {
+    if($_SERVER['HTTP_HOST']==PRD_SERVER_HOST){$this->_myDB = new mysqli(PRD_DB_HOST, PRD_DB_USERNAME, PRD_DB_PASSWORD, PRD_DB_NAME);}
+    else{$this->_myDB = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);}
 
-  }
+   }
 
   public static function getInstance()
-  {
+   {
     if(!self::$instance)
     {
       self::$instance = new MyPortalDB();
     }
 
     return self::$instance;
-  }
+   }
 
   public function getConnection()
   {
@@ -168,14 +168,6 @@ class MyPortalDB implements Database{
 
     }
 
-  	// public function insert_2_db( $query){
-    //
-	  // 	 $result = $this->_myDB->query($query);
-		//    if ($result==false){echo "i had a problem inserting";
-		//    return $result;}
-		//     else{return false;}
-    //
-    // 	}
 
 
 
@@ -183,7 +175,8 @@ class MyPortalDB implements Database{
 
 
 }
-
+//delete the $instance and turn to this class method in a statis way MyPortalDB::query_2_array
+//new MyPortalDB();
 $instance = MyPortalDB::getInstance();
 $_myDB = $instance->getConnection();
 //var_dump($instance);

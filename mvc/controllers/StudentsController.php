@@ -3,6 +3,7 @@
 class StudentsController {
 
 private $student_name, $student_phone, $student_email, $course_filename;
+public $errors = Array();
 
 public function listAllAction() {
 
@@ -15,9 +16,7 @@ public function listAllAction() {
    }
 
 public function listAllThumbnailAction() {
-        //preparing the courses list
         $model = new StudentsModel();
-
         $list = $model->get_all_students();
 
         //preparing ony an arrays of the thumbnail data
@@ -40,19 +39,16 @@ public function listAllThumbnailAction() {
 
 public function studentDetailsAction(){
      $model = new StudentsModel();
-     $mydata = Array();
-     $mydata  =   $model->get_student('id',$_GET['id']);
-    // print_r($mydata);
-     return $mydata;
+     $data = Array();
+     $data  =   $model->get_student('id',$_GET['id']);
+     return $data;
 
    }
 
 public function studentRegisterAction() {
-    $utilities = new Utilities();
+    global $utilities;
     $model = new StudentsModel();
     $data = Array();
-    $errors= Array();
-
 
       if(isset($_POST['submitted'])){
         $name = $this->evaluateStudentName($_POST['student_name']);
@@ -63,18 +59,13 @@ public function studentRegisterAction() {
           }
 
         if(!$name || !$phone || !$email || $filename==false){
-          if($name==false){$errors['student_name']="student name is invalid. minimum 1 char <br>";}//{echo "course name is invalid. minimum 1 char <br>";}
-          if($phone==false){$errors['phone_number_invalid']="manager phone should be between 9 to 13 digits..<br>";}//{echo "course number is invalid.<br>";}
-          if($email==false){$errors['student_email']="student email is invalid .<br>";}//{echo  "course description is invalid . minimum 1 char .<br>";}
-          if(isset($_FILES['student_image']) && $filename===false){$errors['file_type']="file type is not adquate. please upload only images<br>";}//{echo "file type is not adquate. please upload only images<br>";}
-          elseif(isset($_FILES['student_image']) && ($_FILES['student_image']['name'] !="") && ($_FILES['student_image']['error'] != 0) ){$errors['file_general']="something is wrong with the file. plese try again or replace it.";}//{echo "something is wrong with the file. plese try again or replace it.";}
-          $data=$errors;
+          if(isset($_FILES['student_image']) && $filename===false){$this->errors['file_type']=$utilities->createUserMessage("file_type");}
+          elseif(isset($_FILES['student_image']) && ($_FILES['student_image']['name'] !="") && ($_FILES['student_image']['error'] != 0) ){$this->errors['file_general']=$utilities->createUserMessage("file_general");}
 
-            $_POST['success']="false";
-          //  header('location: courseRegister');
+
+          $_POST['success']="false";
+          $_POST['student_register_errors']=$this->errors;
           header("url=/home/students/studentRegister");
-
-          //return $data;
 
 
         }
@@ -86,7 +77,6 @@ public function studentRegisterAction() {
           $model->create_student($this->student_name,$this->student_phone, $this->student_email, $filename=null);
             header("location: /home/");
             $_POST['success']="true";
-          //  return true;
 
         }
 
@@ -113,6 +103,7 @@ public function studentRegisterAction() {
 //////////////////////////////////////////////////////////////////////////////////////
     public function studentEditAction(){
     $model = new StudentsModel();
+    global $utilities;
 
     if(!isset($_POST['submitted'])){
     $res = $this->studentDetailsAction();
@@ -128,22 +119,18 @@ public function studentRegisterAction() {
         //    $filename = $this->evaluateCourseImage($_FILES['course_image']['type']);
         //  }
 
-      //  if(!$name || !$number || !$description || $filename==false){
-          if(!$name || !$phone || !$email ){
-          if($name==false){$errors['student_name']="course name is invalid. minimum 1 char <br>";}//{echo "course name is invalid. minimum 1 char <br>";}
-          if($phone==false){$errors['student_phone_invalid']="phone number is invalid.<br>";}//{echo "course number is invalid.<br>";}
-          if($email==false){$errors['student_email']="email is invalid . minimum 1 char .<br>";}//{echo  "course description is invalid . minimum 1 char .<br>";}
+          if(!$name || !$phone || !$email ) //todo: || $filename==false){
+          {
         //  if(isset($_FILES['course_image']) && $filename===false){$errors['file_type']="file type is not adquate. please upload only images<br>";}//{echo "file type is not adquate. please upload only images<br>";}
         //  elseif(isset($_FILES['course_image']) && ($_FILES['course_image']['name'] !="") && ($_FILES['course_image']['error'] != 0) ){$errors['file_general']="something is wrong with the file. plese try again or replace it.";}//{echo "something is wrong with the file. plese try again or replace it.";}
           $data['name']=$_POST['student_name'];
           $data['phone']=$_POST['student_phone'];
           $data['email']=$_POST['student_email'];
-          $data['errors']=$errors;
 
 
             $_POST['success']="false";
-
-          header("url=/home/students/studentEdit?id=".$_GET['id']);
+            $_POST['student_edit_errors']=$this->errors;
+            header("url=/home/students/studentEdit?id=".$_GET['id']);
 
             return $data;
 
@@ -152,11 +139,8 @@ public function studentRegisterAction() {
 
         if( $name && $phone && $email && $filename==false){
           $this->student_name = $_POST['student_name'];
-            echo "student name is $this->student_name ";
           $this->student_phone = $_POST['student_phone'];
-            echo "course name is $this->student_phoner ";
           $this->student_email= trim($_POST['student_email']);
-            echo "student email is $this->student_email";
           $model->edit_student($_GET['id'],$this->student_name, $this->student_phone, $this->student_email, $filename=null,0);
             header("location: /home/");
             $_POST['success']="true";
@@ -193,7 +177,7 @@ public function studentRegisterAction() {
 
     if(!isset($_POST['edit']) && isset($_POST['delete'])){
         echo "beggining delete";
-        $is_deleted = 1;
+
         $model->edit_student($_GET['id'],null,null,null,null, 1);
 
         header("location: /home/");
@@ -203,16 +187,7 @@ public function studentRegisterAction() {
     }else{echo "no delete happened";}
 
 
-
-
   }
-
-
-
-
-
-
-
 
 
 public function countAllAction($students, $filter,$value){
@@ -224,12 +199,17 @@ public function countAllAction($students, $filter,$value){
 
    //evaluating the name is minimum 1 word
 private function evaluateStudentName($name){
+  global $utilities;
       $regex = "^\w+( \w+)*$";
-      if(!preg_match("/$regex/",$name)){return false;}
+      if(!preg_match("/$regex/",$name)){
+        $this->errors['name'] = $utilities->createUserMessage('name');
+        return false;}
       else{return true;}
       }
-     //valisation for numeric value of up to 6 digits
+     //valisation for numeric value o f8-13 digits
 private function evaluateStudentPhone($number){
+  global $utilities;
+
        $clean_phone = "";
          for($i=0; $i<strlen($number); $i++)
          if(is_numeric($number[$i])){
@@ -238,16 +218,17 @@ private function evaluateStudentPhone($number){
 
         $regex = "^[0-9]{1}[0-9]{8,13}$";
         if(!preg_match("/$regex/",$clean_phone)){
-            $errors['student_phone']="student phone should be between 9 to 13 digits.";
+            $this->errors['phone'] = $utilities->createUserMessage('phone');
               return false;}
         else{return true;}
 
 
       }
 private function evaluateStudentEmailForEdit($email){
+  global $utilities;
 
   if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-      $errors['student_email']="email pattern is wrong.";
+      $this->errors['email'] = $utilities->createUserMessage('email');
       return false;}else{return true;}
 
      }
@@ -255,8 +236,10 @@ private function evaluateStudentEmailForEdit($email){
 
       //evaluating the description is minimum 1 word
 private function evaluateStudentEmail($email){
+  global $utilities;
+
  if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-     $errors['student_email']="email pattern is wrong.";
+     $this->errors['email_pattern'] = $utilities->createUserMessage('email_pattern');
      return false;}
 
   $model = new StudentsModel();
@@ -268,19 +251,13 @@ private function evaluateStudentEmail($email){
           return true;}
 
   if(!empty($res)){
-    $errors['student_email_unique']="email already exists. should be unique.";
+    $this->errors['email_exists'] = $utilities->createUserMessage('email_exists');
     return false;}
 
 return true;
 }
 
 
-//evaluating the uploaded file type is image
-private function evaluateStudentImage($imageType){
-  if(substr($imageType, 0, 5) !== "image"){return false;}
-  else{return true;}
-
-}
 
 }
  ?>
