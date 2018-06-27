@@ -79,7 +79,7 @@ class Router {
         }
 
         if( !class_exists($controller_name ) ) {
-          echo "controller file not found";
+          View::render('notFound',4);
 
         die();
         }
@@ -92,7 +92,6 @@ class Router {
         // $action_name=$this->screen_action_name;
         // $callable_param = [$screen_instance, $action_name];
         // }
-
        $callable_param = [$screen_instance, $this->screen_action_name];
 
 
@@ -111,7 +110,7 @@ class Router {
 
 
 
-      
+
 
 
         call_user_func($callable_param, $arr);

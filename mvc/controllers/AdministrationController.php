@@ -3,7 +3,7 @@ class AdministrationController{
     public $data =Array();
     private $sub_controller;
     private $sub_action;
-   //get the $args array that containd the inner class and method the screen controller should run
+
   public function administrationAction($args){
 
    $managers = new ManagersController();

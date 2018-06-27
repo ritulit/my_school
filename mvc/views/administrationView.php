@@ -1,26 +1,6 @@
 <?php View::render('headerView',4);?>
 
 
-<header>
-
-<nav>
-  <div class="nav-bar">
-  <img class="avatar" id="avatar-login" src="/img/logo.jpg" alt="admin image" >
-
-   <a href="/home/">School</a> |
-   <a href="/administration/">Administration</a> |
-
-
- </div>
- <div class="nav-bar-user">
- Welcome, <?php ?>  |
- <a href="#">Logout</a> |
- <img class="avatar" id="avatar-login" src="/img/administrator.jpg" alt="admin image" >
-</div>
-</nav>
-
-</header>
-
 <div class="root-container">
 
   <div class="ghost-list-container">

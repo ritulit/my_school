@@ -34,7 +34,7 @@ class CoursesModel {
             return $res;
 
       }else {$res= $instance->query_2_array($q);
-      
+
             return $res;}
       }
 
@@ -59,7 +59,6 @@ class CoursesModel {
 
     public function create_course($course_name, $course_number, $course_description,$course_image){
             global $instance;
-            global $_myDB;
      $arr = Array (['name'=>$course_name, 'course_number'=>$course_number, 'description'=>$course_description, 'img'=>$course_image]);
      $instance->insertToDB("courses",$arr);
 

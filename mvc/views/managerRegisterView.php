@@ -4,18 +4,6 @@
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
  ?>
 
-<html>
-
-    <head>
-        <title>The school</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="/css/myStyle.css" />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"  />
-    </head>
-
-    <body>
-
-
   <h2>Add a new manager:</h2>
       <div>
         <?php
@@ -58,9 +46,3 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
     </div>
     <!--  <script type="text/javascript" src="js/courseRegister.js" >  </script>  -->
-
-
-
-   </body>
-
-</html>

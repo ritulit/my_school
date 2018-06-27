@@ -36,6 +36,20 @@ left:0;
 
 }
 
+.hidden-nav{
+
+visibility:hidden;
+
+}
+
+.submit-btn{
+
+	position: reltive;
+	right: 0;
+}
+
+
+
 .root-container{
 	display: flex;
 	position: absolute;
@@ -47,6 +61,22 @@ left:0;
 	width: 98%;
 	border: solid blue 2px;
 	background-color: #d5ff80;
+
+
+
+}
+
+.auth-container{
+	position: relative;
+	padding : 10px;
+	padding-top: 25px;
+  margin: auto;
+	border: solid black 1px;
+	border-radius: 3%;
+	width : 40%;
+	font-size: 14px;
+	background-color: white;
+	height: 45%;
 
 
 

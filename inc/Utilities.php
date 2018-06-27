@@ -61,10 +61,7 @@ else{return true;}
   }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  function is_logged_in() {
-  	$user = new User;
-  	return($user->fetchUser('token',$_COOKIE["TOKEN_KEY_NAME"]));
-  }
+
 
   function restrict_access() {
       if(!is_logged_in()) {
@@ -85,7 +82,6 @@ else{return true;}
      $res=$instance->query_2_array("SELECT * FROM user_messages WHERE name = \"general\"" );
      return $res[0]['description'];
    }
-
    return $res[0]['description'];
 
  }
