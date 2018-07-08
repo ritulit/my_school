@@ -81,7 +81,7 @@ class Router {
         if( !class_exists($controller_name ) ) {
           View::render('notFound',4);
 
-        die();
+        //die();
         }
 
       //todo: add validation for method exist (but maybe move it to the screen controller)

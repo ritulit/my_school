@@ -224,11 +224,16 @@ public function countAllAction($courses, $filter,$value){
    //evaluating the name is minimum 1 word
 private function evaluateCourseName($name){
       global $utilities;
+      $model = new CoursesModel();
+      $res= $model->get_course("name",$name);
       $regex = "^\w+( \w+)*$";
       if(!preg_match("/$regex/",$name)){
     $this->errors['name'] = $utilities->createUserMessage('name');
         return false;}
-      else{return true;}
+      if(!empty($res)){
+          $this->errors['course_name_unique']=$utilities->createUserMessage('course_name_unique');
+          return false;
+        }else{return true;}
       }
 
 

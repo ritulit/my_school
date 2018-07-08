@@ -5,7 +5,7 @@
 
    <?php
 
-
+  //var_dump($data);
    if(!isset($_GET['id'])){ ?>
     <h2 class="business-err"> Something is wrong with your request. Please add filters to search by. </h2>
    <?php }
@@ -18,8 +18,12 @@
       <div class="display-bar">Phone number: <?php echo $data['dynamic_view']['phone']; ?></div><br>
     	<div class="display-bar">Email : <?php echo $data['dynamic_view']['email']; ?></div><br>
 
-    <!--	<div class="display-bar">Current enrolled students : <?php// echo (implode(", ",$data['students'])); ?></div><br>-->
-    <?php }
+      <div class="display-bar"><h4>Student courses:</h4></div>
+      <div class ="display-bar-multi"><?php  echo implode(", " , $data['dynamic_view']['student_courses']) ?></div>
+    <?php
+    if(empty($data['dynamic_view']['student_courses'])){ echo '<div class="display-bar">This student has not been enrolled to any course yet.</div>';}
+
+    }
 
     if(isset($_GET['id']) && empty($data['dynamic_view'])){ ?>
 

@@ -8,42 +8,31 @@ public $errors = Array();
 public function loginAction(){
     global $utilities;
   $model = new AuthModel();
-
     if(isset($_POST['submitted'])){
       $this->email = $_POST['email'];
       $this->password = $_POST['password'];
       $user= $model->authenticate_user("managers",$_POST['email']);
-      //var_dump($user);
-
-
-
-
-    if(((count($user)==1))&&(password_verify($this->password , $user[0]["password"]))){
-
-      echo "passowrd verified";
-          //set $_COOKIE
-          //start session
+      if(((count($user)==1))&&(password_verify($this->password , $user[0]["password"]))){
+         setcookie("TOKEN_KEY_NAME",$user[0]["password"], time()+60);
+                   //start session
           $_POST['success']="true";
-          //header("url= /home/");
           header("location: /home/");
-
-
-
-      }
-    else{
+        }
+     else{
       $this->errors['failed_login']=$utilities->createUserMessage("failed_login");
 
         $_POST['auth']="false";
         $_POST['login_errors']=$this->errors;
-      //  header( 'Location: /auth/login' );
              header("url=/auth/login");
 
-      }
+        }
 
 
 
 
  }
+
+
  //
  // function validateLogin(){
 	// if(isset($_POST['username'])){

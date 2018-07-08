@@ -48,7 +48,7 @@ class StudentsModel {
 		    // array_push($someArr, $value['name']);}
 
        $data = $this->get_all_students($type,$value);
-       if(empty($data)){return $data;}
+       if(empty($data)){return $data; }
        $data = $data[0];
        if(!empty($data) &&($data['img']==null || $data['img']=="")){$data['img']="\"".STUDENT_DEFAULT_IMAGE."\"";}elseif(!empty($data)){ $data['img'] ="\"".STUDENT_IMAGE_UPLOADS.$data['img']."\"";}
 
@@ -61,7 +61,7 @@ class StudentsModel {
 
     public function create_student($student_name, $student_phone, $student_email,$student_image){
             global $instance;
-            global $_myDB;
+
      $arr = Array (['name'=>$student_name, 'phone'=>$student_phone, 'email'=>$student_email, 'img'=>$student_image]);
      $instance->insertToDB("students",$arr);
 
@@ -80,6 +80,27 @@ class StudentsModel {
         echo " this student doesnt exist";
         return false;
       }
+    }
+
+    public function get_student_courses($id){
+    global $instance;
+    $query = "SELECT s2u.c_id from students2courses s2u join students s on s.id = s2u.s_id where s.id=$id";
+    $data = $instance->query_2_array($query);
+
+    return $data;
+
+    }
+
+    public function insert_student_courses($student_id, $courses_arr){
+     global $instance;
+     $student_course_pair = Array();
+     foreach($courses_arr as $value){
+       array_push($student_course_pair,['s_id'=>$student_id,'c_id'=>$value]);
+     }
+
+
+     $instance->insertToDB("students2courses",array_values($student_course_pair));
+
     }
 //////////////////////////////////////////////////////////
 

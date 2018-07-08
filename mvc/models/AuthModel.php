@@ -17,6 +17,9 @@ return $user;
 }
 
 
+}
+
+
 //
 // public_function is_logged_in() {
 //   $user = new User;
@@ -24,6 +27,6 @@ return $user;
 // }
 
 
-}
+
 
 ?>

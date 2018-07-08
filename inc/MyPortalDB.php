@@ -56,9 +56,9 @@ class MyPortalDB implements Database{
 	  		global $instance;
 		  	global $_myDB;
 		  	$query_into = "INSERT INTO {$dest} ";
-        $query_values;
+        $query_values="";
          foreach($content as $value){
-           global   $query_values;
+          // global   $query_values;
             $query_keys = "(" . implode(", ", array_keys($value)) .")" ;
             $query_values .= "(\"" .implode("\",\"", array_values($value)) ."\")". ","  ;
             }
@@ -68,7 +68,7 @@ class MyPortalDB implements Database{
 
          $query = $query_into . $query_keys . $query_value . $query_values ;
 
-		     $result = $_myDB->query($query);
+         $result = $_myDB->query($query);
         	if ($result !== true){
         //todo: log the error to the log file
 		     echo  $_myDB->error;
@@ -77,13 +77,15 @@ class MyPortalDB implements Database{
 
 
 		}
+
+
     public function insertToDBToEdit($dest , $content){
         global $instance;
         global $_myDB;
         $query_into = "INSERT INTO {$dest} ";
-        $query_values;
+        $query_values="";
          foreach($content as $value){
-           global   $query_values;
+          // global   $query_values;
             $query_keys = "(" . implode(", ", array_keys($value)) .")" ;
             $query_values .= "(\"" .implode("\",\"", array_values($value)) ."\")". ","  ;
             }

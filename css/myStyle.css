@@ -41,11 +41,16 @@ left:0;
 visibility:hidden;
 
 }
+.selected-screen{
+ background-color:  #d5ff80;
+ margin-bottom: 5px;
+
+}
 
 .submit-btn{
 
-	position: reltive;
-	right: 0;
+margin: auto;
+display: inline-block;
 }
 
 
@@ -168,6 +173,7 @@ padding-left:25px;
 	vertical-align:middle;
 	padding-left:25px;
 	display: inline-block;
+	z-index: 100;
 
 }
 
@@ -176,8 +182,24 @@ padding-left:25px;
 margin-left:20px;
 margin-top:5px;
 
-width: 80%%;
+width: 80%;
 }
+
+.display-bar-multi{
+	display: flex;
+	flex-wrap: wrap;
+  max-height: 250px;
+	overflow: auto;
+	margin-left: 25px;
+	z-index: 10;
+
+
+}
+.cb-div{
+margin-right: 20px;
+
+}
+
 .business-err{
  margin: 50px;
 

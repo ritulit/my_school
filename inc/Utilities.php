@@ -35,7 +35,7 @@ public function imageUpload($file_arr_name, $dest, $new_name){
       $dest_path  = sprintf('%s/%s/%s',rtrim($_SERVER['DOCUMENT_ROOT'], "/"), trim($dest , "/"), $filename);
       $is_success = move_uploaded_file($_FILES[$file_arr_name]['tmp_name'], $dest_path);
       if($is_success) {
-        echo "file upload was done";
+        //echo "file upload was done";
         return $filename;}
         else{
           echo "file upload was unssuseccful. please try again by editing the course.";
@@ -62,16 +62,18 @@ else{return true;}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+// function is_logged_in() {
+// 	$user = new AuthModel;
+// 	return($user->authenticate_user("managers",$_COOKIE["TOKEN_KEY_NAME"]));
+// }
+//
+// function restrict_access() {
+//     if(!is_logged_in()) {
+//         header('Location: http://localhost/orit/login.php?error=ACCESS DENIED');
+//     }
 
-  function restrict_access() {
-      if(!is_logged_in()) {
-          header('Location: /login.php?error=ACCESS DENIED');
-      }
 
-  }
-
-
-
+///////////////////////////////////////////////////////////////////////////////////
 
  function createUserMessage($value){
    global $instance;

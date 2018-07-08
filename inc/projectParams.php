@@ -2,7 +2,7 @@
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
-//define("TOKEN_KEY_NAME","token");
+define("TOKEN_KEY_NAME","token");
 
 const  COURSE_IMAGE_UPLOADS = "/img/user_uploads/courses/";
 const  STUDENT_IMAGE_UPLOADS = "/img/user_uploads/students/";

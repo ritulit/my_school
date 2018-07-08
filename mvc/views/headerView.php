@@ -14,16 +14,17 @@
 
   <nav>
   <div class="nav-bar">
-     <img class="avatar" id="avatar-login" src="/img/logo.jpg" alt="admin image" >
-     <a  href="/home/">School |</a>
-     <a  href="/administration/">Administration |</a>
+     <img class="avatar" id="avatar-login" src="/img/logo.jpg" alt="admin image" ><i> My School</i>
+     <a  href="/home/"> &nbsp;&nbsp; Home |</a>
+     <a  href="/administration/">  Administration |</a>
   </div>
 
   <div class="nav-bar-user">
      Welcome, <?php ?>  |
-     <a href="/auth/logout">Logout</a> |
+     <a href="/auth/logout">Logout|</a> 
      <img class="avatar" id="avatar-login" src="/img/administrator.jpg" alt="admin image" >
   </div>
+
   </nav>
 
   </header>

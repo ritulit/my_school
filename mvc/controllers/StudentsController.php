@@ -40,7 +40,8 @@ public function listAllThumbnailAction() {
 public function studentDetailsAction(){
      $model = new StudentsModel();
      $data = Array();
-     $data  =   $model->get_student('id',$_GET['id']);
+     $data =   $model->get_student('id',$_GET['id']);
+     $data['student_courses'] =$this->getStudentCoursesByName($this->getStudentCourses($_GET['id']));
      return $data;
 
    }
@@ -48,21 +49,24 @@ public function studentDetailsAction(){
 public function studentRegisterAction() {
     global $utilities;
     $model = new StudentsModel();
+    $c_model = new CoursesModel();
     $data = Array();
 
       if(isset($_POST['submitted'])){
         $name = $this->evaluateStudentName($_POST['student_name']);
         $phone= $this->evaluateStudentPhone($_POST['student_phone']);
         $email = $this->evaluateStudentEmail(trim($_POST['student_email']));
+        $s_courses;
+        if(count($_POST['s_courses'])>0){$s_courses = $this->evaluateStudentCourses($_POST['s_courses']);}
         if(isset($_FILES['student_image']) && $_FILES['student_image']['error'] == 0 ){
             $filename = $utilities->evaluateImageType($_FILES['student_image']['type']);
           }
 
-        if(!$name || !$phone || !$email || $filename==false){
+
+
+        if(!$name || !$phone || !$email ||  $filename==false){
           if(isset($_FILES['student_image']) && $filename===false){$this->errors['file_type']=$utilities->createUserMessage("file_type");}
           elseif(isset($_FILES['student_image']) && ($_FILES['student_image']['name'] !="") && ($_FILES['student_image']['error'] != 0) ){$this->errors['file_general']=$utilities->createUserMessage("file_general");}
-
-
           $_POST['success']="false";
           $_POST['student_register_errors']=$this->errors;
           header("url=/home/students/studentRegister");
@@ -75,6 +79,12 @@ public function studentRegisterAction() {
           $this->student_phone = $_POST['student_phone'];
           $this->student_email = trim($_POST['student_email']);
           $model->create_student($this->student_name,$this->student_phone, $this->student_email, $filename=null);
+          if(count($_POST['s_courses'])>0){
+            $s_email = "\"".$this->student_email."\"";
+            $s_model = new StudentsModel();
+            $new_s = $s_model->get_student("email", $s_email);
+            $this->insertStudentCourses($new_s['id'], $_POST['s_courses']);
+          }
             header("location: /home/");
             $_POST['success']="true";
 
@@ -87,6 +97,13 @@ public function studentRegisterAction() {
           $filename =  $utilities->imageUpload('student_image', STUDENT_IMAGE_UPLOADS, $this->student_email);
           $this->student_filename = $filename;
           $model->create_student($this->student_name,$this->student_phone, $this->student_email,  $this->student_filename);
+        //  die();
+        if(count($_POST['s_courses'])>0){
+          $s_email = "\"".$this->student_email."\"";
+          $s_model = new StudentsModel();
+          $new_s = $s_model->get_student("email", $s_email);
+          $this->insertStudentCourses($new_s['id'], $_POST['s_courses']);
+        }
           header("location: /home/");
           $_POST['success']="true";
         }
@@ -197,6 +214,29 @@ public function countAllAction($students, $filter,$value){
 
 }
 
+public function getStudentCourses($id){
+  $model = new StudentsModel();
+  $data = $model->get_student_courses($id);
+  return $data;
+}
+
+public function getStudentCoursesByName($courses_ids){
+  $model = new CoursesModel();
+  $c_name_list= Array();
+  foreach($courses_ids as $value){
+    array_push($c_name_list, ($model->get_course('id',$value['c_id'])['name']));
+  }
+
+  return  $c_name_list;
+}
+
+
+private function insertStudentCourses($student_id, $courses_arr){
+    $model = new StudentsModel();
+    $model->insert_student_courses($student_id, $courses_arr);
+
+}
+
    //evaluating the name is minimum 1 word
 private function evaluateStudentName($name){
   global $utilities;
@@ -248,7 +288,7 @@ private function evaluateStudentEmail($email){
 
 
   if(empty($res) || $res==false){
-          return true;}
+    return true;}
 
   if(!empty($res)){
     $this->errors['email_exists'] = $utilities->createUserMessage('email_exists');
@@ -257,6 +297,23 @@ private function evaluateStudentEmail($email){
 return true;
 }
 
+private function evaluateStudentCourses($courses_arr){
+  global $utilities;
+  $courses = new CoursesController();
+  $res= $courses->listAllThumbnailAction();
+  $res_ids = Array();
+  foreach($res as $value){
+  array_push($res_ids,$value['id']) ;
+  }
+foreach($courses_arr as $value){
+  $is_there = array_search($value,$res_names);
+  if($is_there==false){return false;}
+ else{
+  $this->errors['course_doesnt_exist'] = $utilities->createUserMessage('course_doesnt_exist');
+  return true;}
+
+    }
+  }
 
 
 }
