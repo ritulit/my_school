@@ -38,6 +38,21 @@ class CoursesModel {
             return $res;}
       }
 
+      public function get_course_students_count($course_id){
+        global $instance;
+        $course_query ="SELECT * from courses where id=$course_id";
+        $exist_course =  $instance->query_2_array($course_query);
+        if(!empty($exist_course)){
+          $query = "SELECT COUNT(*) from students2courses where c_id=$course_id ";
+          $res= $instance->query_2_array($query);
+          return $res;
+        }
+        else{
+          return false;
+        }
+
+      }
+
     public function get_course($type,$value) {
         global $instance;
         $someArr = array();

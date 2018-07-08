@@ -42,7 +42,9 @@ public function listAllThumbnailAction() {
 public function courseDetailsAction(){
      $model = new CoursesModel();
      $mydata = Array();
+
      $mydata  =   $model->get_course('id',$_GET['id']);
+     $mydata['course_students_count'] = $model->get_course_students_count($_GET['id']);
      if($mydata['is_deleted']=="1"){
        $mydata = Array();
        return $mydata;
