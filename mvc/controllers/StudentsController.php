@@ -41,7 +41,15 @@ public function studentDetailsAction(){
      $model = new StudentsModel();
      $data = Array();
      $data =   $model->get_student('id',$_GET['id']);
+     if($data['is_deleted']=="1"){$data=[];
+     return $data;}
      $data['student_courses'] =$this->getStudentCoursesByName($this->getStudentCourses($_GET['id']));
+     $raw_ids= Array();
+     $ids = $this->getStudentCourses($_GET['id']);
+     foreach($ids as $value){
+       array_push($raw_ids,$value['c_id']);
+     }
+     $data['student_courses_ids']=$raw_ids;
      return $data;
 
    }
@@ -49,7 +57,6 @@ public function studentDetailsAction(){
 public function studentRegisterAction() {
     global $utilities;
     $model = new StudentsModel();
-    $c_model = new CoursesModel();
     $data = Array();
 
       if(isset($_POST['submitted'])){
@@ -102,6 +109,7 @@ public function studentRegisterAction() {
           $s_email = "\"".$this->student_email."\"";
           $s_model = new StudentsModel();
           $new_s = $s_model->get_student("email", $s_email);
+          var_dump($_POST['s_courses']);
           $this->insertStudentCourses($new_s['id'], $_POST['s_courses']);
         }
           header("location: /home/");
@@ -132,6 +140,8 @@ public function studentRegisterAction() {
         $name = $this->evaluateStudentName($_POST['student_name']);
         $phone = $this->evaluateStudentPhone($_POST['student_phone']);
         $email = $this->evaluateStudentEmailForEdit($_POST['student_email']);
+        $s_courses;
+        if(count($_POST['s_courses'])>0){$s_courses = $this->evaluateStudentCourses($_POST['s_courses']);}
       //  if(!empty($_FILES['course_image']) && $_FILES['course_image']['error'] == 0 ){
         //    $filename = $this->evaluateCourseImage($_FILES['course_image']['type']);
         //  }
@@ -143,8 +153,6 @@ public function studentRegisterAction() {
           $data['name']=$_POST['student_name'];
           $data['phone']=$_POST['student_phone'];
           $data['email']=$_POST['student_email'];
-
-
             $_POST['success']="false";
             $_POST['student_edit_errors']=$this->errors;
             header("url=/home/students/studentEdit?id=".$_GET['id']);
@@ -159,8 +167,9 @@ public function studentRegisterAction() {
           $this->student_phone = $_POST['student_phone'];
           $this->student_email= trim($_POST['student_email']);
           $model->edit_student($_GET['id'],$this->student_name, $this->student_phone, $this->student_email, $filename=null,0);
-            header("location: /home/");
-            $_POST['success']="true";
+          $this->insertStudentCourses($_GET['id'], $_POST['s_courses'],true);
+          header("location: /home/");
+          $_POST['success']="true";
 
            return $data;
 
@@ -172,8 +181,8 @@ public function studentRegisterAction() {
           $this->student_email = trim($_POST['student_email']);
           $filename =  $utilities->imageUpload('student_image', STUDENT_IMAGE_UPLOADS, $this->student_email);
           $this->student_filename = $filename;
-          $model->edit_course($_GET['id'], $this->student_name, $this->student_phone, $this->student_email,  $this->student_filename,0);
-
+          $model->edit_student($_GET['id'], $this->student_name, $this->student_phone, $this->student_email,  $this->student_filename,0);
+          $this->insertStudentCourses($_GET['id'], $_POST['s_courses'],true);
           header("location: /home/");
           $_POST['success']="true";
 
@@ -196,6 +205,7 @@ public function studentRegisterAction() {
         echo "beggining delete";
 
         $model->edit_student($_GET['id'],null,null,null,null, 1);
+
 
         header("location: /home/");
         $_POST['success']="true";
@@ -231,9 +241,9 @@ public function getStudentCoursesByName($courses_ids){
 }
 
 
-private function insertStudentCourses($student_id, $courses_arr){
+private function insertStudentCourses($student_id, $courses_arr,$is_edit=false){
     $model = new StudentsModel();
-    $model->insert_student_courses($student_id, $courses_arr);
+    $model->insert_student_courses($student_id, $courses_arr,$is_edit);
 
 }
 
@@ -306,7 +316,7 @@ private function evaluateStudentCourses($courses_arr){
   array_push($res_ids,$value['id']) ;
   }
 foreach($courses_arr as $value){
-  $is_there = array_search($value,$res_names);
+  $is_there = array_search($value,$res_ids);
   if($is_there==false){return false;}
  else{
   $this->errors['course_doesnt_exist'] = $utilities->createUserMessage('course_doesnt_exist');

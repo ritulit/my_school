@@ -4,18 +4,24 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
  ?>
 
 
-    <!--<?php //print_r($_POST); ?>-->
 
-  <h2>Edit course:</h2>
 
       <div>
-        <?php
 
+        <?php
+        if(isset($_GET['id']) && empty($data['dynamic_view'])){ ?>
+
+          <h2 class="business-err"> We cannot find the student you requested. please try again.</h2>
+
+      <?php }
+      else{ ?>
+       <h2>Edit course:</h2>
+       <?php
        foreach($_POST['course_edit_errors'] as $value){
 
-          echo $value."<br>";}
+          echo $value."<br>";} ?>
 
-           ?>
+
 
       <img class="single-display-avatar" alt="course_image" src=<?php if(!['dynamic_view']['img']){echo $data['dynamic_view']['img'];}else{echo $_POST['img_holder'];}  ?>>
       <form action="" method="post" enctype="multipart/form-data" >
@@ -38,10 +44,9 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
       </form>
 
-
+   <?php } ?>
 
     </div>
-    <!--  <script type="text/javascript" src="js/courseRegister.js" >  </script>  -->
 
 
 

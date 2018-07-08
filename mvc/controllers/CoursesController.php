@@ -43,6 +43,10 @@ public function courseDetailsAction(){
      $model = new CoursesModel();
      $mydata = Array();
      $mydata  =   $model->get_course('id',$_GET['id']);
+     if($mydata['is_deleted']=="1"){
+       $mydata = Array();
+       return $mydata;
+     }
      return $mydata;
 
    }
@@ -100,6 +104,7 @@ public function courseRegisterAction() {
 
     if(!isset($_POST['submitted'])){
     $res = $this->courseDetailsAction();
+    if($res['is_deleted'==1]){$res=Array();}
      return $res;}
 
     if(isset($_POST['submitted']) && isset($_POST['edit'])){

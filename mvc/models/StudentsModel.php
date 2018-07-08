@@ -91,15 +91,29 @@ class StudentsModel {
 
     }
 
-    public function insert_student_courses($student_id, $courses_arr){
+    public function insert_student_courses($student_id, $courses_arr,$edit=false){
      global $instance;
      $student_course_pair = Array();
+     if($edit==true){
+       if(!empty($courses_arr) ||$course_arr!=null){
+        
+         $instance->deleteFromDB("students2courses","s_id=$student_id");
+         foreach($courses_arr as $value){
+           array_push($student_course_pair,['s_id'=>$student_id,'c_id'=>$value]);
+          }
+           $instance->insertToDB("students2courses",array_values($student_course_pair));
+
+         }else{
+             $instance->deleteFromDB("students2courses","s_id=$student_id");}
+
+     }
+     else{
      foreach($courses_arr as $value){
        array_push($student_course_pair,['s_id'=>$student_id,'c_id'=>$value]);
+      }
+       $instance->insertToDB("students2courses",array_values($student_course_pair));
      }
 
-
-     $instance->insertToDB("students2courses",array_values($student_course_pair));
 
     }
 //////////////////////////////////////////////////////////
